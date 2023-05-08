@@ -69,6 +69,12 @@ async function mapDocs<Collection extends admin.firestore.DocumentData[]>(
         if (prop instanceof admin.firestore.Timestamp) {
             prop = prop.toDate()
         }
+        if (prop instanceof admin.firestore.GeoPoint) {
+            prop = {
+                latitude: prop.latitude,
+                longitude: prop.longitude
+            }
+        }
 
         acc[propName] = prop
         return acc
@@ -78,8 +84,14 @@ async function mapDocs<Collection extends admin.firestore.DocumentData[]>(
 const getRepository = (db: admin.firestore.Firestore) => ({
     create: async <Collection extends admin.firestore.DocumentData[]>(
         table: Table,
-        data: Collection[number]
+        data: Collection[number],
+        createId?: string
     ) => {
+        if (createId) {
+            await db.collection(table).doc(createId).set(data)
+            return createId
+        }
+
         const { id } = await db.collection(table).add(data)
         return id
     },
@@ -88,6 +100,10 @@ const getRepository = (db: admin.firestore.Firestore) => ({
         table: Table,
         id: ID
     ) => {
+        if (!id) {
+            return
+        }
+
         const doc = await db.collection(table).doc(id).get()
         if (!doc) {
             return

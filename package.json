@@ -1,6 +1,10 @@
 {
-    "version": "0.2.0",
+    "version": "1.0.0",
     "name": "q-core",
+    "author": {
+        "email": "mike@authentiq.ch",
+        "name": "Mike Züger"
+    },
     "scripts": {
         "build": "yarn build:esm && yarn build:cjs",
         "build:cjs": "tsc --project ./tsconfig.json --skipLibCheck --module commonjs",
@@ -44,8 +48,8 @@
     },
     "devDependencies": {
         "@types/pdfmake": "0.2.2",
-        "rimraf": "3.0.2",
-        "typescript": "^4.9.4"
+        "rimraf": "4.4.1",
+        "typescript": "^5.0.2"
     },
     "browserslist": [
         ">0.3%",
@@ -54,11 +58,6 @@
         "not op_mini all"
     ],
     "contributors": [
-        {
-            "email": "andres@authentiq.ch",
-            "name": "Andres Maier",
-            "url": "https://www.authentiq.ch/"
-        },
         {
             "email": "mike@authentiq.ch",
             "name": "Mike Züger",

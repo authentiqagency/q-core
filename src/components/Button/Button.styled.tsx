@@ -105,11 +105,11 @@ export const composeButtonVariants = ({
         );
         --_boxShadow: var(
             ${namespaceWithVariant}-boxShadow,
-            var(${namespace}-boxShadow, undefined)
+            var(${namespace}-boxShadow, 'none')
         );
         --_boxShadowHover: var(
             ${namespaceWithVariant}-hover-boxShadow,
-            var(${namespace}-hover-boxShadow, undefined)
+            var(${namespace}-hover-boxShadow, 'none')
         );
     `
 }
@@ -120,8 +120,8 @@ export const Button = styled(
     )
 )`
     ${composeButtonVariants}
-    width: ${({ width }) => (width ? width : undefined)};
-    height: ${({ height }) => (height ? height : undefined)};
+    width: ${({ width }) => (width ? width : 'auto')};
+    height: ${({ height }) => (height ? height : 'auto')};
     padding: var(--_padding);
     border: var(--_border);
     border-radius: var(--_borderRadius);

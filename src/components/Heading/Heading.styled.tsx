@@ -16,7 +16,7 @@ export const Element = styled(
 )`
     font-family: var(--fonts-heading);
     font-size: ${({ displayAs }) =>
-        displayAs ? `var(--fontSizes-${displayAs}) ` : undefined};
+        displayAs ? `var(--fontSizes-${displayAs}) ` : 'medium'};
     font-weight: ${({ displayAs }) =>
         displayAs
             ? `var(--fontWeights-${displayAs}) `
@@ -24,5 +24,5 @@ export const Element = styled(
 
     letter-spacing: ${({ displayAs }) => `var(--letterSpacings-${displayAs}) `};
     line-height: ${({ displayAs }) =>
-        displayAs ? `var(--lineHeights-${displayAs}) ` : undefined};
+        displayAs ? `var(--lineHeights-${displayAs}) ` : 'normal'};
 `

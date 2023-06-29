@@ -20,12 +20,14 @@ export const Element = styled(
 )`
     display: ${({ display }) => display || 'block'};
     width: 100%;
-    height: ${({ height }) => height};
-    flex-direction: ${({ flexDirection }) => flexDirection};
-    align-items: ${({ alignItems }) => alignItems};
-    justify-content: ${({ justifyContent }) => justifyContent};
+    height: ${({ height }) => (height ? height : 'initial')};
+    flex-direction: ${({ flexDirection }) =>
+        flexDirection ? flexDirection : 'initial'};
+    align-items: ${({ alignItems }) => (alignItems ? alignItems : 'initial')};
+    justify-content: ${({ justifyContent }) =>
+        justifyContent ? justifyContent : 'initial'};
     padding: ${({ padding }) => `var(--spacings-${padding}) `};
-    text-align: ${({ textAlign }) => textAlign || 'left'};
+    text-align: ${({ textAlign }) => (textAlign ? textAlign : 'initial')};
 
     ${({ centered }) =>
         centered &&

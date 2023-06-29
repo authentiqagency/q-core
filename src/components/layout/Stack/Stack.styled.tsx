@@ -11,6 +11,7 @@ const StyledStack: ForwardRefRenderFunction<HTMLDivElement, StackProps> = (
     {
         as: Component = 'div',
         spacing: _spacing,
+        breakpoints: _breakpoints,
         direction: _direction,
         alignItems: _alignItems,
         justifyContent: _justifyContent,
@@ -29,8 +30,8 @@ export const Element = styled(
         (direction === 'horizontal' || justifyContent || alignItems) &&
         css`
             display: flex;
-            justify-content: ${justifyContent};
-            align-items: ${alignItems};
+            justify-content: ${justifyContent ? justifyContent : 'initial'};
+            align-items: ${alignItems ? alignItems : 'initial'};
             flex-direction: ${getFlexDirection(direction)};
         `}
 
@@ -45,7 +46,9 @@ export const Element = styled(
                                     (direction || alignItems) &&
                                     `
                                         display: flex;
-                                        align-items: ${alignItems};
+                                        align-items: ${
+                                            alignItems ? alignItems : 'initial'
+                                        };
                                         flex-direction: ${getFlexDirection(
                                             direction
                                         )};

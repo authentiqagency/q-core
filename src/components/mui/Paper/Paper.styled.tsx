@@ -18,14 +18,14 @@ const StyledPaper = (
 export const Element = styled(forwardRef(StyledPaper))`
     position: relative;
     overflow: ${({ overflow }) => (overflow ? overflow : 'hidden')};
-    width: ${({ width }) => (width ? width : 'auto')};
-    height: ${({ height }) => (height ? height : 'auto')};
+    width: ${({ width }) => (width ? width : 'initial')};
+    height: ${({ height }) => (height ? height : 'initial')};
     border-radius: ${({ borderRadius }) =>
         borderRadius ? borderRadius : 'var(--radii-default)'};
     background-color: var(--colors-white);
     box-shadow: var(--shadows-mui);
     overflow-x: ${({ scroll }) =>
-        scroll === 'x' || scroll === 'all' ? 'auto' : 'visible'};
+        scroll === 'x' || scroll === 'all' ? 'auto' : 'initial'};
     overflow-y: ${({ scroll }) =>
-        scroll === 'y' || scroll === 'all' ? 'auto' : 'visible'};
+        scroll === 'y' || scroll === 'all' ? 'auto' : 'initial'};
 `

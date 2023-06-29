@@ -115,13 +115,17 @@ export const composeButtonVariants = ({
 }
 
 export const Button = styled(
-    ({ width: _width, height: _height, ...rest }: ButtonProps) => (
-        <button {...rest} />
-    )
+    ({
+        as: Component = 'button',
+        width: _width,
+        height: _height,
+        variant: _variant,
+        ...rest
+    }: ButtonProps) => <Component {...rest} />
 )`
     ${composeButtonVariants}
-    width: ${({ width }) => (width ? width : 'auto')};
-    height: ${({ height }) => (height ? height : 'auto')};
+    width: ${({ width }) => (width ? width : 'initial')};
+    height: ${({ height }) => (height ? height : 'initial')};
     padding: var(--_padding);
     border: var(--_border);
     border-radius: var(--_borderRadius);

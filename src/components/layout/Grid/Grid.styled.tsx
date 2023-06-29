@@ -23,7 +23,7 @@ export const Grid = styled(
     --_gap: var(--grid-gap, var(--spacings-default, 24px));
 
     display: grid;
-    align-items: ${({ alignItems }) => alignItems || 'flex-start'};
+    align-items: ${({ alignItems }) => (alignItems ? alignItems : 'initial')};
     grid-gap: ${({ gap }) =>
         gap ? `var(--spacings-${gap}) 0` : 'var(--_gap) 0'};
     grid-template-columns: repeat(${GRID_COLS}, 1fr);

@@ -9,7 +9,7 @@ export const Element = styled(({ fluid: _fluid, ...rest }: WrapperProps) => (
     --_padding: 0 var(--wrapper-padding, var(--spacings-default, 24px));
     --_height: var(--wrapper-height, initial);
 
-    width: ${({ fluid }) => (fluid ? '100%' : 'auto')};
+    width: ${({ fluid }) => (fluid ? '100%' : 'initial')};
     max-width: ${({ fluid }) => (fluid ? 'none' : 'var(--_maxWidth)')};
     height: var(--_height);
     padding: var(--_padding);

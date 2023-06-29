@@ -2,10 +2,18 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
 import { from } from '../../utils/breakpoints'
+import React, { forwardRef, ForwardRefRenderFunction } from 'react'
 
 import { SVGIconProps } from './SVGIcon'
 
-export const Container = styled.div<SVGIconProps>`
+const StyledSVG: ForwardRefRenderFunction<HTMLDivElement, SVGIconProps> = (
+    { breakpoints: _breakpoints, size: _size, children, ...rest },
+    ref
+) => React.createElement('div', { ...rest, ref } as any, children)
+
+export const Container = styled(
+    forwardRef<HTMLDivElement, SVGIconProps>(StyledSVG)
+)`
     --_width: var(
         --icon-${({ size }) => size}-width,
         var(--icon-default-width, 24px)
@@ -23,11 +31,11 @@ export const Container = styled.div<SVGIconProps>`
                     ([breakpoint, { size }]) =>
                         size &&
                         `
-                    @media ${from[breakpoint]} {
-                        --_width: var(--icon-${size}-width);
-                        --_height: var(--icon-${size}-height);
-                    }
-                `
+                @media ${from[breakpoint]} {
+                    --_width: var(--icon-${size}-width);
+                    --_height: var(--icon-${size}-height);
+                }
+            `
                 )
                 .join('\n')}
         `}

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, FC } from 'react'
+import React, { ComponentType, ButtonHTMLAttributes, FC } from 'react'
 
 import Stack from '../layout/Stack'
 
@@ -8,6 +8,7 @@ export type ButtonVariant = 'primary' | 'secondary'
 
 export interface ButtonProps
     extends Partial<ButtonHTMLAttributes<HTMLButtonElement>> {
+    as?: string | ComponentType
     children: React.ReactNode
     variant: ButtonVariant
     endIcon?: React.ReactNode

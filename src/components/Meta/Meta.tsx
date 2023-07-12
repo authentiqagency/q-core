@@ -1,6 +1,6 @@
+import { NextSeo, NextSeoProps } from 'next-seo'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { NextSeo, NextSeoProps } from 'next-seo'
 import { FC } from 'react'
 
 type MetaProps = NextSeoProps & {
@@ -9,18 +9,24 @@ type MetaProps = NextSeoProps & {
     manifest: string
     siteName: string
     themeColor: string
+    title: string
+    description: string
+    noindex: boolean
+    nofollow: boolean
+    canonical: string
 }
 
 const Meta: FC<MetaProps> = ({
     siteName,
     appBaseUrl,
-    title = 'q-core',
-    description = 'q-core',
+    title,
+    description,
     image = '/android-chrome-512x512.png',
     themeColor = '#111111',
     manifest = '/site.webmanifest',
     noindex = false,
-    nofollow = false
+    nofollow = false,
+    canonical
 }) => {
     const { asPath, locale: currentLocale, locales } = useRouter()
 
@@ -29,6 +35,7 @@ const Meta: FC<MetaProps> = ({
             <NextSeo
                 defaultTitle={title}
                 description={description}
+                canonical={canonical || `${appBaseUrl}${asPath}`}
                 languageAlternates={locales
                     ?.filter((locale) => locale !== currentLocale)
                     .map((locale) => ({
@@ -56,6 +63,7 @@ const Meta: FC<MetaProps> = ({
                     href="/apple-touch-icon.png"
                 />
                 <link rel="manifest" href={manifest} />
+                <link href={appBaseUrl} rel="home"></link>
                 <meta name="msapplication-TileColor" content={themeColor} />
                 <meta name="theme-color" content={themeColor} />
                 <meta

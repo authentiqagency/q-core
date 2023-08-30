@@ -151,7 +151,7 @@ export const Button = styled(
     }
 `
 
-export const Icon = styled.span`
+export const Icon = styled.div`
     display: flex;
     align-self: center;
 `

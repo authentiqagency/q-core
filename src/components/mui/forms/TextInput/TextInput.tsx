@@ -72,6 +72,11 @@ const TextInput = (
             ...props.inputProps,
             type: 'tel'
         }
+    } else if (type === 'password') {
+        props.inputProps = {
+            ...props.inputProps,
+            type: 'password'
+        }
     }
 
     const getValue = (

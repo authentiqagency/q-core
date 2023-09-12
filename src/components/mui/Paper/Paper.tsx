@@ -8,6 +8,7 @@ export interface PaperProps extends HTMLAttributes<HTMLDivElement> {
     overflow?: string
     scroll?: 'x' | 'y' | 'all'
     width?: string
+    ownerState?: {}
 }
 
 const Paper = (props: PaperProps, ref: ForwardedRef<HTMLDivElement>) => (

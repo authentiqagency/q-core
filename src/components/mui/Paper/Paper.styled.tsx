@@ -9,6 +9,7 @@ const StyledPaper = (
         width: _width,
         height: _height,
         overflow: _overflow,
+        ownerState: _ownerState,
         scroll: _scroll,
         ...rest
     }: PaperProps,

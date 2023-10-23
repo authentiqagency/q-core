@@ -25,6 +25,7 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     control?: Control<FieldValues>
     createLabel?: string
     error?: boolean
+    required?: boolean
     fieldName?: string
     helperText?: string
     limitTags?: number
@@ -163,6 +164,7 @@ const Select = (
                 renderInput={(params) => (
                     <TextInput
                         {...params}
+                        required={props.required}
                         label={label}
                         variant="filled"
                         error={error}

@@ -18,6 +18,7 @@ import type { DatePickerProps as MuiDatePickerProps } from '@mui/x-date-pickers-
 type DatePickerProps = Omit<MuiDatePickerProps<Date>, 'renderInput'> & {
     control?: Control<FieldValues>
     error?: boolean
+    required?: boolean
     fieldName?: string
     helperText?: string
     mask?: string
@@ -28,6 +29,7 @@ const DatePicker: FC<DatePickerProps> = ({
     error,
     fieldName,
     helperText,
+    required,
     label,
     onChange,
     value,
@@ -71,6 +73,7 @@ const DatePicker: FC<DatePickerProps> = ({
                         return (
                             <TextInput
                                 {...props}
+                                required={required}
                                 ref={ref}
                                 style={{ width: '100%' }}
                                 onBlur={(e) => {

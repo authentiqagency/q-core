@@ -30,6 +30,7 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     helperText?: string
     limitTags?: number
     multiple?: boolean
+    grouped?: boolean
 }
 
 const Select = (
@@ -39,6 +40,7 @@ const Select = (
         helperText,
         fieldName,
         multiple,
+        grouped,
         control,
         options,
         onChange,
@@ -172,6 +174,17 @@ const Select = (
                         onChange={onInputChange}
                     />
                 )}
+                groupBy={grouped ? (option) => option.group : undefined}
+                renderGroup={
+                    grouped
+                        ? (params) => (
+                              <div key={params.key}>
+                                  <div>{params.group}</div>
+                                  <div>{params.children}</div>
+                              </div>
+                          )
+                        : undefined
+                }
                 renderOption={(props, { value }, { inputValue }) => {
                     const matches = match(value, inputValue)
                     const parts = parse(value, matches)

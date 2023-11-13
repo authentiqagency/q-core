@@ -34,7 +34,7 @@ export const Input = styled(
             }
         },
 
-        padding: round ? '0 var(--spacings-default)' : "0",
+        padding: round ? '0 var(--spacings-default)' : '0',
         borderRadius: round ? 'var(--spacings-huge)' : 'var(--radii-default)',
         backgroundColor: white,
         boxShadow: 'var(--shadows-mui)',

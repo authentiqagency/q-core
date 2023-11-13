@@ -14,6 +14,7 @@ import { vars } from '../../../../utils/string'
 import Paper from '../../Paper'
 import Autocomplete, { Option } from '../Autocomplete'
 import TextInput from '../TextInput'
+import MenuItem from '@mui/material/MenuItem'
 
 const selectFilter = createFilterOptions()
 
@@ -179,7 +180,13 @@ const Select = (
                     grouped
                         ? (params) => (
                               <div key={params.key}>
-                                  <div>{params.group}</div>
+                                  <MenuItem
+                                      style={{
+                                          pointerEvents: 'none',
+                                          fontWeight: 'var(--fontWeights-bold)'
+                                      }}>
+                                      <div>{params.group}</div>
+                                  </MenuItem>
                                   <div>{params.children}</div>
                               </div>
                           )

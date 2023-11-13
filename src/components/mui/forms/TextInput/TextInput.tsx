@@ -14,6 +14,8 @@ export type TextInputProps = TextFieldProps & {
     fieldName?: string
     grow?: 'auto'
     round?: boolean
+    min?: number
+    max?: number
 }
 
 const TextInput = (
@@ -26,6 +28,8 @@ const TextInput = (
         defaultValue,
         value,
         fieldName,
+        min,
+        max,
         ...props
     }: TextInputProps,
     ref: Ref<HTMLDivElement | null | undefined>
@@ -60,7 +64,10 @@ const TextInput = (
         props.inputProps = {
             ...props.inputProps,
             inputMode: 'numeric',
-            pattern: '[\\.0-9]*'
+            pattern: '[\\.0-9]*',
+            type: 'number',
+            min,
+            max
         }
     } else if (type === 'email') {
         props.inputProps = {
@@ -98,7 +105,8 @@ const TextInput = (
             round={round}
             onChange={(event: any) => handleChange(event, field)}
             value={getValue(field)}
-            inputRef={setRef}></Styled.Input>
+            inputRef={setRef}
+        />
     )
 
     if (!control) {

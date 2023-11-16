@@ -14,6 +14,7 @@ import { vars } from '../../../../utils/string'
 import Paper from '../../Paper'
 import Autocomplete, { Option } from '../Autocomplete'
 import TextInput from '../TextInput'
+import MenuItem from '@mui/material/MenuItem'
 
 const selectFilter = createFilterOptions()
 
@@ -25,10 +26,12 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     control?: Control<FieldValues>
     createLabel?: string
     error?: boolean
+    required?: boolean
     fieldName?: string
     helperText?: string
     limitTags?: number
     multiple?: boolean
+    grouped?: boolean
 }
 
 const Select = (
@@ -38,6 +41,7 @@ const Select = (
         helperText,
         fieldName,
         multiple,
+        grouped,
         control,
         options,
         onChange,
@@ -163,6 +167,7 @@ const Select = (
                 renderInput={(params) => (
                     <TextInput
                         {...params}
+                        required={props.required}
                         label={label}
                         variant="filled"
                         error={error}
@@ -170,6 +175,23 @@ const Select = (
                         onChange={onInputChange}
                     />
                 )}
+                groupBy={grouped ? (option) => option.group : undefined}
+                renderGroup={
+                    grouped
+                        ? (params) => (
+                              <div key={params.key}>
+                                  <MenuItem
+                                      style={{
+                                          pointerEvents: 'none',
+                                          fontWeight: 'var(--fontWeights-bold)'
+                                      }}>
+                                      <div>{params.group}</div>
+                                  </MenuItem>
+                                  <div>{params.children}</div>
+                              </div>
+                          )
+                        : undefined
+                }
                 renderOption={(props, { value }, { inputValue }) => {
                     const matches = match(value, inputValue)
                     const parts = parse(value, matches)

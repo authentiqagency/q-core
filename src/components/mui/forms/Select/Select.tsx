@@ -1,20 +1,22 @@
-import { AutocompleteProps, FilterOptionsState } from '@mui/material'
 import { createFilterOptions } from '@mui/material/Autocomplete'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
-import { forwardRef, Ref } from 'react'
-import {
-    Control,
-    Controller,
-    ControllerRenderProps,
-    FieldValues
-} from 'react-hook-form'
+import { forwardRef } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { vars } from '../../../../utils/string'
 import Paper from '../../Paper'
 import Autocomplete, { Option } from '../Autocomplete'
 import TextInput from '../TextInput'
-import MenuItem from '@mui/material/MenuItem'
+
+import type { Ref } from 'react'
+import type {
+    Control,
+    ControllerRenderProps,
+    FieldValues
+} from 'react-hook-form'
+
+import type { AutocompleteProps, FilterOptionsState } from '@mui/material'
 
 const selectFilter = createFilterOptions()
 
@@ -26,30 +28,27 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     control?: Control<FieldValues>
     createLabel?: string
     error?: boolean
-    required?: boolean
     fieldName?: string
     helperText?: string
     limitTags?: number
     multiple?: boolean
-    grouped?: boolean
 }
 
 const Select = (
     {
-        limitTags = 2,
-        error,
-        helperText,
-        fieldName,
-        multiple,
-        grouped,
         control,
-        options,
+        createLabel,
+        defaultValue,
+        error,
+        fieldName,
+        helperText,
+        label,
+        limitTags = 2,
+        multiple,
         onChange,
         onCreate,
         onInputChange,
-        defaultValue,
-        label,
-        createLabel,
+        options,
         ...props
     }: SelectProps,
     ref: Ref<HTMLInputElement>
@@ -149,74 +148,56 @@ const Select = (
         }
     }
 
-    const renderSelect = (field: ControllerRenderProps<FieldValues, any>) => {
-        return (
-            <Autocomplete
-                PaperComponent={Paper}
-                multiple={multiple}
-                limitTags={limitTags}
-                options={options}
-                {...props}
-                value={getValue(field.value ?? defaultValue)}
-                ref={ref}
-                onChange={(_, values) => onSelectChange(values, field)}
-                filterOptions={(options, params) =>
-                    filterOptions(options, params, field)
-                }
-                getOptionLabel={({ value }) => value}
-                renderInput={(params) => (
-                    <TextInput
-                        {...params}
-                        required={props.required}
-                        label={label}
-                        variant="filled"
-                        error={error}
-                        helperText={helperText}
-                        onChange={onInputChange}
-                    />
-                )}
-                groupBy={grouped ? (option) => option.group : undefined}
-                renderGroup={
-                    grouped
-                        ? (params) => (
-                              <div key={params.key}>
-                                  <MenuItem
-                                      style={{
-                                          pointerEvents: 'none',
-                                          fontWeight: 'var(--fontWeights-bold)'
-                                      }}>
-                                      <div>{params.group}</div>
-                                  </MenuItem>
-                                  <div>{params.children}</div>
-                              </div>
-                          )
-                        : undefined
-                }
-                renderOption={(props, { value }, { inputValue }) => {
-                    const matches = match(value, inputValue)
-                    const parts = parse(value, matches)
+    const renderSelect = (field: ControllerRenderProps<FieldValues, any>) => (
+        <Autocomplete
+            PaperComponent={Paper}
+            multiple={multiple}
+            limitTags={limitTags}
+            options={options}
+            {...props}
+            value={getValue(field.value ?? defaultValue)}
+            ref={ref}
+            onChange={(_, values) => onSelectChange(values, field)}
+            filterOptions={(options, params) =>
+                filterOptions(options, params, field)
+            }
+            getOptionLabel={({ value }) => value}
+            renderInput={(params) => (
+                <TextInput
+                    {...params}
+                    label={label}
+                    variant="filled"
+                    error={error}
+                    helperText={helperText}
+                    onChange={onInputChange}
+                />
+            )}
+            renderOption={(props, { key, value }, { inputValue }) => {
+                if (!value) return null
 
-                    return (
-                        <Option {...props}>
-                            <div>
-                                {parts.map((part, index) => (
-                                    <span
-                                        key={`${part.text}_${index}`}
-                                        style={{
-                                            fontWeight: part.highlight
-                                                ? 'var(--fontWeights-bold)'
-                                                : 'var(--fontWeights-default)'
-                                        }}>
-                                        {part.text}
-                                    </span>
-                                ))}
-                            </div>
-                        </Option>
-                    )
-                }}
-            />
-        )
-    }
+                const matches = match(value, inputValue)
+                const parts = parse(value, matches)
+
+                return (
+                    <Option {...props} key={key || value}>
+                        <div>
+                            {parts?.map((part, index) => (
+                                <span
+                                    key={`${part.text}_${index}`}
+                                    style={{
+                                        fontWeight: part.highlight
+                                            ? 'var(--fontWeights-bold)'
+                                            : 'var(--fontWeights-default)'
+                                    }}>
+                                    {part.text}
+                                </span>
+                            ))}
+                        </div>
+                    </Option>
+                )
+            }}
+        />
+    )
 
     if (!control) {
         return renderSelect({
@@ -236,13 +217,19 @@ const Select = (
 
 export const objectsToOptions = (
     objects: any[] = [],
-    labelField = 'name'
-): Array<{ key: string; value: string }> =>
-    objects
-        .map(({ id, [labelField]: label }) => ({
-            key: id,
-            value: label
-        }))
-        .sort((a, b) => a.value.localeCompare(b.value))
+    labelField = 'name',
+    sort: boolean = true
+): Array<{ key: string; value: string }> => {
+    objects = objects.map(({ id, [labelField]: label }) => ({
+        key: id,
+        value: label
+    }))
+
+    if (sort) {
+        return objects.sort((a, b) => a.value.localeCompare(b.value))
+    }
+
+    return objects
+}
 
 export default forwardRef<HTMLInputElement, SelectProps>(Select)

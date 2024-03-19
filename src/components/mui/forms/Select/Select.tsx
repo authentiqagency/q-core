@@ -25,6 +25,7 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     onCreate: (value: any) => void
     onInputChange: (value: any) => void
     options: Array<{ key: string; value: string }>
+    required?: boolean
     control?: Control<FieldValues>
     createLabel?: string
     error?: boolean
@@ -41,6 +42,7 @@ const Select = (
         defaultValue,
         error,
         fieldName,
+        required,
         helperText,
         label,
         limitTags = 2,
@@ -165,6 +167,7 @@ const Select = (
             renderInput={(params) => (
                 <TextInput
                     {...params}
+                    required={required}
                     label={label}
                     variant="filled"
                     error={error}

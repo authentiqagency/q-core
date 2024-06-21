@@ -3,11 +3,11 @@ import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import { forwardRef } from 'react'
 import { Controller } from 'react-hook-form'
-
 import { vars } from '../../../../utils/string'
 import Paper from '../../Paper'
 import Autocomplete, { Option } from '../Autocomplete'
 import TextInput from '../TextInput'
+import MenuItem from '@mui/material/MenuItem'
 
 import type { Ref } from 'react'
 import type {
@@ -33,6 +33,7 @@ type SelectProps = AutocompleteProps<any, any, any, any> & {
     helperText?: string
     limitTags?: number
     multiple?: boolean
+    grouped?: boolean
 }
 
 const Select = (
@@ -47,6 +48,7 @@ const Select = (
         label,
         limitTags = 2,
         multiple,
+        grouped,
         onChange,
         onCreate,
         onInputChange,
@@ -175,6 +177,23 @@ const Select = (
                     onChange={onInputChange}
                 />
             )}
+            groupBy={grouped ? (option) => option.group : undefined}
+            renderGroup={
+                grouped
+                    ? (params) => (
+                          <div key={params.key}>
+                              <MenuItem
+                                  style={{
+                                      pointerEvents: 'none',
+                                      fontWeight: 'var(--fontWeights-bold)'
+                                  }}>
+                                  <div>{params.group}</div>
+                              </MenuItem>
+                              <div>{params.children}</div>
+                          </div>
+                      )
+                    : undefined
+            }
             renderOption={(props, { key, value }, { inputValue }) => {
                 if (!value) return null
 

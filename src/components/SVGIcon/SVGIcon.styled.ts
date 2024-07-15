@@ -1,8 +1,8 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import React, { forwardRef, ForwardRefRenderFunction } from 'react'
 
 import { from } from '../../utils/breakpoints'
-import React, { forwardRef, ForwardRefRenderFunction } from 'react'
 
 import { SVGIconProps } from './SVGIcon'
 
@@ -43,6 +43,7 @@ export const Container = styled(
     display: inline-flex;
     width: var(--_width);
     height: var(--_height);
+    flex-shrink: 0;
 
     svg {
         width: 100%;

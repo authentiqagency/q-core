@@ -5,20 +5,24 @@ import { from } from '../breakpoints'
 import {
     RawDesignTokens,
     ResponsiveTokens,
+    ThemeTokens,
     TokenComponents,
     Variant,
     Variants
 } from './designTokens'
 
 const renderTokens = (
-    tokens: RawDesignTokens | ResponsiveTokens = {}
+    tokens: RawDesignTokens | ThemeTokens | ResponsiveTokens = {}
 ): string =>
     Object.entries(tokens)
         .filter(
             ([namespace]) =>
-                !['breakpoints', 'responsiveTokens', 'components'].includes(
-                    namespace
-                )
+                ![
+                    'breakpoints',
+                    'responsiveTokens',
+                    'components',
+                    'theme'
+                ].includes(namespace)
         )
         .map(([namespace, token]) =>
             Object.entries(token).map(
@@ -111,6 +115,14 @@ export const generateGlobalStyles = ({
         ${renderComponentTokens(designTokens.components)}
 
         ${customVariables}
+
+        ${Object.entries(designTokens.theme || {}).map(
+            ([key, themeTokens]) => `
+                [data-theme='${key}'] {
+                    ${renderTokens(themeTokens)}
+                }
+            `
+        )}
     }
 
     ${Object.entries(designTokens.responsiveTokens || {})

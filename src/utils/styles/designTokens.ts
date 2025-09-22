@@ -108,6 +108,10 @@ type TokenBorders = {
           }
 }
 
+type Theme = {
+    [key: 'dark' | string]: ThemeTokens
+}
+
 export type DesignTokens = {
     backgrounds: {
         [key: 'default' | string]: string
@@ -134,7 +138,10 @@ export type DesignTokens = {
     spacings: TokenSpacings | Pixels<TokenSpacings>
     components?: TokenComponents
     responsiveTokens?: TokenResponsiveTokens
+    theme?: Theme
 }
+
+export type ThemeTokens = Partial<DesignTokens>
 
 export type RawDesignTokens = DesignTokens & {
     letterSpacings: TokenLetterSpacings

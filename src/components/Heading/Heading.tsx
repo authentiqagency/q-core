@@ -5,7 +5,7 @@ import * as Styled from './Heading.styled'
 type Headings = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 export interface HeadingProps
     extends Partial<HTMLAttributes<HTMLHeadingElement>> {
-    displayAs: Headings
+    displayAs?: Headings
     as?: Headings | ComponentType<any>
 }
 

@@ -1,12 +1,12 @@
-import { ComponentType, FC, HTMLAttributes } from 'react'
-
 import * as Styled from './Heading.styled'
+import type { FC, HTMLAttributes } from 'react'
 
 type Headings = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+
 export interface HeadingProps
     extends Partial<HTMLAttributes<HTMLHeadingElement>> {
+    as?: Headings | any
     displayAs?: Headings
-    as?: Headings | ComponentType<any>
 }
 
 const Heading: FC<HeadingProps> = ({ as = 'h1', displayAs, ...props }) => {
@@ -15,7 +15,7 @@ const Heading: FC<HeadingProps> = ({ as = 'h1', displayAs, ...props }) => {
             typeof as === 'string' &&
             ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(as)
         ) {
-            displayAs = as
+            displayAs = as as Headings
         } else {
             displayAs = 'h1'
         }

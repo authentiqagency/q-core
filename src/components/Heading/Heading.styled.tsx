@@ -1,13 +1,11 @@
 import styled from '@emotion/styled'
 
-import { HeadingProps } from './Heading'
+import type { HeadingProps } from './Heading'
 
 export const Element = styled(
-    ({
-        as: ComponentOverride,
-        displayAs: Component,
-        ...rest
-    }: HeadingProps) => {
+    ({ as: ComponentOverride, displayAs, ...rest }: HeadingProps) => {
+        const Component = displayAs || 'h1'
+
         if (ComponentOverride) {
             return <ComponentOverride {...rest} />
         }
@@ -16,7 +14,7 @@ export const Element = styled(
 )`
     font-family: var(--fonts-heading);
     font-size: ${({ displayAs }) =>
-        displayAs ? `var(--fontSizes-${displayAs}) ` : 'medium'};
+        displayAs ? `var(--fontSizes-${displayAs}) ` : undefined};
     font-weight: ${({ displayAs }) =>
         displayAs
             ? `var(--fontWeights-${displayAs}) `
@@ -24,5 +22,5 @@ export const Element = styled(
 
     letter-spacing: ${({ displayAs }) => `var(--letterSpacings-${displayAs}) `};
     line-height: ${({ displayAs }) =>
-        displayAs ? `var(--lineHeights-${displayAs}) ` : 'normal'};
+        displayAs ? `var(--lineHeights-${displayAs}) ` : undefined};
 `

@@ -14,57 +14,49 @@ export const multilineLabelProps = {
     zIndex: '4 !important'
 }
 
+type StyledProps = {
+    grow?: 'auto'
+    round?: boolean
+}
+
 export const Input = styled(
     ({ round: _round, grow: _grow, ...props }: TextInputProps) => (
         <TextField {...props} variant="outlined" />
     )
-)(({ round, grow }: { grow?: 'auto'; round?: boolean }) => ({
+)<StyledProps>(({ round, grow }): any => ({
     [`& .${formLabelClasses.root}`]: {
-        zIndex: 1,
-        textShadow: '0 0 3px var(--colors-white)'
+        textShadow: '0 0 3px var(--colors-white)',
+        zIndex: 1
     },
 
     [`& .${inputBaseClasses.root}`]: {
         '&:hover': {
             [`&:not(.${inputBaseClasses.disabled})`]: {
                 [`& .${outlinedInputClasses.notchedOutline}`]: {
-                    borderWidth: '1px',
-                    borderColor: primaryColor
+                    borderColor: primaryColor,
+                    borderWidth: '1px'
                 }
             }
         },
 
-        padding: round ? '0 var(--spacings-default)' : '0',
-        borderRadius: round ? 'var(--spacings-huge)' : 'var(--radii-default)',
         backgroundColor: white,
+        borderRadius: round ? 'var(--spacings-huge)' : 'var(--radii-default)',
         boxShadow: 'var(--shadows-mui)',
+        padding: round ? '0 var(--spacings-default)' : '0',
 
-        [`&.${inputBaseClasses.focused}`]: {
-            [`&:not(.${inputBaseClasses.disabled})`]: {
-                [`& .${outlinedInputClasses.notchedOutline}`]: {
-                    borderWidth: '1px',
-                    borderColor: primaryColor
-                }
-            },
-
-            [`&.${inputBaseClasses.multiline}`]: {
-                zIndex: 3
-            }
+        [`&.${autocompleteClasses.inputRoot}`]: {
+            backgroundColor: white
         },
 
-        [`&:not(.${inputBaseClasses.focused})`]: {
-            [`&.${inputBaseClasses.multiline}`]:
-                grow !== 'auto'
-                    ? {
-                          '> textarea': {
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap'
-                          },
-                          position: 'relative',
+        [`& .${inputBaseClasses.input}`]: {
+            textOverflow: 'ellipsis'
+        },
 
-                          zIndex: 3
-                      }
-                    : undefined
+        [`& .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: 'var(--colors-white)',
+            borderStyle: 'solid',
+            borderWidth: '1px',
+            transition: 'border 0.2s ease-in'
         },
 
         [`&.${inputBaseClasses.disabled} .${outlinedInputClasses.notchedOutline}`]:
@@ -72,19 +64,30 @@ export const Input = styled(
                 borderColor: white
             },
 
-        [`& .${outlinedInputClasses.notchedOutline}`]: {
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: 'var(--colors-white)',
-            transition: 'border 0.2s ease-in'
+        [`&:not(.${inputBaseClasses.focused})`]: {
+            ...(grow !== 'auto' && {
+                [`&.${inputBaseClasses.multiline}`]: {
+                    '> textarea': {
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    },
+                    position: 'relative',
+                    zIndex: 3
+                }
+            })
         },
 
-        [`& .${inputBaseClasses.input}`]: {
-            textOverflow: 'ellipsis'
-        },
+        [`&.${inputBaseClasses.focused}`]: {
+            [`&:not(.${inputBaseClasses.disabled})`]: {
+                [`& .${outlinedInputClasses.notchedOutline}`]: {
+                    borderColor: primaryColor,
+                    borderWidth: '1px'
+                }
+            },
 
-        [`&.${autocompleteClasses.inputRoot}`]: {
-            backgroundColor: white
+            [`&.${inputBaseClasses.multiline}`]: {
+                zIndex: 3
+            }
         }
     }
 }))

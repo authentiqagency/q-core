@@ -1,5 +1,5 @@
 import { SwitchProps as MuiSwitchProps } from '@mui/material'
-import { FC, JSX } from 'react'
+import { FC, ReactElement } from 'react'
 import ReactDOMServer from 'react-dom/server'
 
 import * as Styled from './Switch.styled'
@@ -12,11 +12,11 @@ type SwitchProps = MuiSwitchProps & {
     fieldName: string
     helperText: string | undefined
     label: string
-    leftIcon: JSX.Element
-    leftIconActive: JSX.Element
+    leftIcon: ReactElement
+    leftIconActive: ReactElement
     onChange: (name: string, value: boolean, options: any) => void
-    rightIcon: JSX.Element
-    rightIconActive: JSX.Element
+    rightIcon: ReactElement
+    rightIconActive: ReactElement
     value: boolean
 }
 

@@ -47,8 +47,12 @@ const Address: FC<AddressProps> = ({
 }) => {
     const google = typeof window !== 'undefined' ? window.google : undefined
     const attributionElement = useRef<HTMLDivElement | null>(null)
-    const placesService = useRef<google.maps.places.PlacesService>()
-    const autocompleteService = useRef<google.maps.places.AutocompleteService>()
+    const placesService = useRef<
+        google.maps.places.PlacesService | undefined
+    >(undefined)
+    const autocompleteService = useRef<
+        google.maps.places.AutocompleteService | undefined
+    >(undefined)
 
     const [place, setPlace] = useState<any>(
         defaultValue.length > 0 ? { description: defaultValue } : null

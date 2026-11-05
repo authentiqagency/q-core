@@ -35,7 +35,7 @@ const DatePicker: FC<DatePickerProps> = ({
     value,
     ...props
 }) => {
-    const pickerRef = useRef<HTMLDivElement | null>()
+    const pickerRef = useRef<HTMLDivElement | null>(null)
 
     const handleChange = (
         date: Date | null,
@@ -54,7 +54,10 @@ const DatePicker: FC<DatePickerProps> = ({
     const renderPicker = (
         field: ControllerRenderProps<FieldValues, string>
     ) => (
-        <div ref={(ref) => (pickerRef.current = ref)}>
+        <div
+            ref={(ref) => {
+                pickerRef.current = ref
+            }}>
             <MuiDatePicker
                 value={field.value ? new Date(field.value) : null}
                 label={label}

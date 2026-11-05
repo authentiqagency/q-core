@@ -1,5 +1,5 @@
 import { SwitchProps as MuiSwitchProps } from '@mui/material'
-import { FC } from 'react'
+import { FC, JSX } from 'react'
 import ReactDOMServer from 'react-dom/server'
 
 import * as Styled from './Switch.styled'

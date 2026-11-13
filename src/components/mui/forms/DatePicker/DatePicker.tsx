@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 import Paper from '../../Paper'
 import TextInput from '../TextInput'
 
-import type { FC } from 'react'
+import type { FC, FocusEvent, Ref } from 'react'
 import type {
     Control,
     ControllerRenderProps,
@@ -22,7 +22,33 @@ type DatePickerProps = Omit<MuiDatePickerProps<Date>, 'renderInput'> & {
     fieldName?: string
     helperText?: string
     mask?: string
+    clearable?: boolean
+    /** @deprecated no longer supported by MUI X, ignored */
+    clearText?: string
 }
+
+type PickerTextFieldProps = TextFieldProps & {
+    ownerState?: unknown
+    onDateBlur?: (value: string) => void
+}
+
+// Defined outside of the render so React keeps the same component type
+// between renders and does not remount the input (focus loss while typing).
+const PickerTextField = forwardRef(function PickerTextField(
+    { ownerState: _ownerState, onDateBlur, ...props }: PickerTextFieldProps,
+    ref: Ref<HTMLDivElement>
+) {
+    return (
+        <TextInput
+            {...(props as any)}
+            ref={ref}
+            style={{ width: '100%' }}
+            onBlur={(e: FocusEvent<HTMLInputElement>) =>
+                onDateBlur?.(e.target.value)
+            }
+        />
+    )
+})
 
 const DatePicker: FC<DatePickerProps> = ({
     control,
@@ -33,6 +59,9 @@ const DatePicker: FC<DatePickerProps> = ({
     label,
     onChange,
     value,
+    clearable,
+    clearText: _clearText,
+    slotProps,
     ...props
 }) => {
     const pickerRef = useRef<HTMLDivElement | null>(null)
@@ -51,6 +80,25 @@ const DatePicker: FC<DatePickerProps> = ({
         }
     }
 
+    const handleBlur = (
+        value: string,
+        field: ControllerRenderProps<FieldValues, string>
+    ) => {
+        if (value === 'DD.MM.YYYY') {
+            return handleChange(null, field)
+        }
+
+        const [day, month, year] = value.split('.')
+        if (!day || !month || !year) {
+            return handleChange(null, field)
+        }
+
+        handleChange(
+            new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+            field
+        )
+    }
+
     const renderPicker = (
         field: ControllerRenderProps<FieldValues, string>
     ) => (
@@ -62,51 +110,32 @@ const DatePicker: FC<DatePickerProps> = ({
                 value={field.value ? new Date(field.value) : null}
                 label={label}
                 format="dd.MM.yyyy"
-                slotProps={{
-                    popper: {
-                        anchorEl: pickerRef.current
-                    }
-                }}
+                {...props}
                 slots={{
                     desktopPaper: Paper,
-                    textField: forwardRef(function TextField(
-                        props: TextFieldProps,
-                        ref: any
-                    ) {
-                        return (
-                            <TextInput
-                                {...props}
-                                required={required}
-                                ref={ref}
-                                style={{ width: '100%' }}
-                                onBlur={(e) => {
-                                    const value = e.target.value
-
-                                    if (value === 'DD.MM.YYYY') {
-                                        return handleChange(null, field)
-                                    }
-
-                                    const [day, month, year] = value.split('.')
-                                    if (!day || !month || !year) {
-                                        return handleChange(null, field)
-                                    }
-
-                                    handleChange(
-                                        new Date(
-                                            parseInt(year),
-                                            parseInt(month) - 1,
-                                            parseInt(day)
-                                        ),
-                                        field
-                                    )
-                                }}
-                                error={error}
-                                helperText={helperText}
-                            />
-                        )
-                    })
+                    textField: PickerTextField,
+                    ...props.slots
                 }}
-                {...props}
+                slotProps={{
+                    ...slotProps,
+                    popper: {
+                        anchorEl: pickerRef.current,
+                        ...(slotProps?.popper as object)
+                    },
+                    field: {
+                        clearable,
+                        onClear: () => handleChange(null, field),
+                        ...(slotProps?.field as object)
+                    },
+                    textField: {
+                        required,
+                        error,
+                        helperText,
+                        onDateBlur: (value: string) =>
+                            handleBlur(value, field),
+                        ...(slotProps?.textField as object)
+                    } as any
+                }}
                 onAccept={(date) => handleChange(date, field)}
             />
         </div>

@@ -1,4 +1,4 @@
-import { createContext, FC, JSX, useContext } from 'react'
+import { createContext, FC, ReactElement, useContext } from 'react'
 
 import { RawDesignTokens } from '../utils/styles/designTokens'
 
@@ -7,7 +7,7 @@ type SettingsProps = {
 }
 
 type SettingsProviderProps = {
-    children: JSX.Element
+    children: ReactElement
     settings: SettingsProps
 }
 
